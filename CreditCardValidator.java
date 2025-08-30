@@ -9,7 +9,8 @@ public class CreditCardValidator {
 
         if (isValid(number)) {
             System.out.println(number + " is a valid credit card number.");
-        } else {
+        } 
+            else {
             System.out.println(number + " is not a valid credit card number.");
         }
     }
@@ -20,7 +21,6 @@ public class CreditCardValidator {
         if (size < 13 || size > 16) {
             return false;
         }
-
         if (!(prefixMatched(number, 4) || prefixMatched(number, 5) ||
               prefixMatched(number, 37) || prefixMatched(number, 6))) {
             return false;
