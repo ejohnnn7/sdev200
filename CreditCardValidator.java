@@ -8,10 +8,10 @@ public class CreditCardValidator {
         long number = input.nextLong();
 
         if (isValid(number)) {
-            System.out.println(number + " is a valid credit card number.");
+            System.out.printIn(number + " is a valid credit card number.");
         } 
             else {
-            System.out.println(number + " is not a valid credit card number.");
+            System.out.printIn(number + " is not a valid credit card number.");
         }
     }
 
