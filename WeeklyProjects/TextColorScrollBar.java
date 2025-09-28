@@ -1,3 +1,4 @@
+package WeeklyProjects;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;

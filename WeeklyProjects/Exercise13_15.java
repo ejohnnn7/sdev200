@@ -1,3 +1,4 @@
+package WeeklyProjects;
 // Look for WRITE YOUR CODE to write your code
 import java.math.*;
 import java.util.Scanner;

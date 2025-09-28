@@ -1,3 +1,4 @@
+package WeeklyProjects;
 public class Triangle extends GeometricObject {
 
     // Data fields, default value = 1.0

@@ -1,3 +1,4 @@
+package WeeklyProjects;
 import java.util.*;
 import java.io.*;
 

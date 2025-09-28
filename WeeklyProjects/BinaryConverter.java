@@ -1,3 +1,4 @@
+package WeeklyProjects;
 public class BinaryConverter {
 
     public static int bin2Dec(String binaryString) throws BinaryFormatException {

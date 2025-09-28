@@ -1,3 +1,4 @@
+package WeeklyProjects;
 public class Conversion {
 
     // Convert feet to meters

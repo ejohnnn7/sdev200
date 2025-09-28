@@ -1,3 +1,4 @@
+package WeeklyProjects;
 public class Circle extends GeometricObject implements Comparable<Circle> {
     private double radius;
 

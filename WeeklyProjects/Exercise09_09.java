@@ -1,3 +1,4 @@
+package WeeklyProjects;
 public class Exercise09_09 {
     // Polygons as defined in exercise
     public static void main(String[] args) {
