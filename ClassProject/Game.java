@@ -1,16 +1,20 @@
 package ClassProject;
 
-// Represents a single video game being tracked.
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game extends Item {
+
     private int hoursPlayed;
     private int completionPercent;
     private String genre;
     private String notes;
     private LocalDate dateAdded;
     private LocalDate lastPlayed;
+
+    // --- New field: list of items ---
+    private List<Item> items;
 
     public Game(int id, String title, String platform, String status,
                 int hoursPlayed, int completionPercent,
@@ -23,8 +27,19 @@ public class Game extends Item {
         this.notes = notes;
         this.dateAdded = dateAdded;
         this.lastPlayed = lastPlayed;
+        this.items = new ArrayList<>(); // initialize list
     }
 
+    // --- Item list methods ---
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    // --- Existing getters and setters ---
     public int getHoursPlayed() { return hoursPlayed; }
     public void setHoursPlayed(int hours) {
         if (hours < 0) throw new IllegalArgumentException("Hours cannot be negative.");
