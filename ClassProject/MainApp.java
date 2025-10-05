@@ -12,14 +12,13 @@ import java.time.LocalDate;
 public class MainApp extends Application {
 
     private GameManager gameManager = new GameManager("games.txt");
-
     private ListView<String> gameListView = new ListView<>();
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Game Tracker");
 
-        // Create input fields
+        // Input fields
         TextField titleField = new TextField();
         titleField.setPromptText("Enter game title");
 
@@ -46,6 +45,10 @@ public class MainApp extends Application {
         // Buttons
         Button addButton = new Button("Add Game");
         Button updateButton = new Button("Update Game");
+        Button deleteButton = new Button("Delete Game");
+        Button viewButton = new Button("View Game");
+
+        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, viewButton);
 
         // Layout for input fields
         GridPane inputGrid = new GridPane();
@@ -74,7 +77,6 @@ public class MainApp extends Application {
         inputGrid.add(new Label("Notes:"), 0, 6);
         inputGrid.add(notesArea, 1, 6);
 
-        HBox buttonBox = new HBox(10, addButton, updateButton);
         inputGrid.add(buttonBox, 1, 7);
 
         // Main layout
@@ -82,7 +84,7 @@ public class MainApp extends Application {
         mainLayout.setPadding(new Insets(10));
         mainLayout.getChildren().addAll(inputGrid, gameListView);
 
-        // Event: Add Game
+        // --- Add Game Event ---
         addButton.setOnAction(e -> {
             try {
                 String title = titleField.getText();
@@ -114,7 +116,7 @@ public class MainApp extends Application {
             }
         });
 
-        // Event: Update Game
+        // --- Update Game Event ---
         updateButton.setOnAction(e -> {
             String selected = gameListView.getSelectionModel().getSelectedItem();
             if (selected == null) {
@@ -146,7 +148,58 @@ public class MainApp extends Application {
             }
         });
 
-        // Event: Populate fields when selecting a game
+        // --- Delete Game Event ---
+        deleteButton.setOnAction(e -> {
+            String selected = gameListView.getSelectionModel().getSelectedItem();
+            if (selected == null) {
+                showAlert("Select a game from the list to delete.");
+                return;
+            }
+
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to delete \"" + selected + "\"?",
+                    ButtonType.YES, ButtonType.NO);
+            confirm.showAndWait();
+
+            if (confirm.getResult() == ButtonType.YES) {
+                Game game = gameManager.findGameByTitle(selected);
+                if (game != null) {
+                    gameManager.removeGame(game.getId());
+                    gameListView.getItems().remove(selected);
+                    clearFields(titleField, platformField, statusCombo, hoursField, completionField, genreField, notesArea);
+                }
+            }
+        });
+
+        // --- View Game Event ---
+        viewButton.setOnAction(e -> {
+            String selected = gameListView.getSelectionModel().getSelectedItem();
+            if (selected == null) {
+                showAlert("Select a game from the list to view.");
+                return;
+            }
+
+            Game game = gameManager.findGameByTitle(selected);
+            if (game != null) {
+                String details = "Title: " + game.getTitle() +
+                                 "\nPlatform: " + game.getPlatform() +
+                                 "\nStatus: " + game.getStatus() +
+                                 "\nHours Played: " + game.getHoursPlayed() +
+                                 "\nCompletion %: " + game.getCompletionPercent() +
+                                 "\nGenre: " + game.getGenre() +
+                                 "\nNotes: " + game.getNotes() +
+                                 "\nDate Added: " + game.getDateAdded() +
+                                 "\nLast Played: " + game.getLastPlayed();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Details");
+                alert.setHeaderText("Details for \"" + game.getTitle() + "\"");
+                alert.setContentText(details);
+                alert.showAndWait();
+            }
+        });
+
+        // --- Populate fields when selecting a game ---
         gameListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 Game game = gameManager.findGameByTitle(newVal);
@@ -162,11 +215,12 @@ public class MainApp extends Application {
             }
         });
 
-        Scene scene = new Scene(mainLayout, 900, 400);
+        Scene scene = new Scene(mainLayout, 1000, 450);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+    // --- Utility Methods ---
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.showAndWait();
